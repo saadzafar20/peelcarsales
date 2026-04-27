@@ -1,0 +1,12 @@
+# Supabase local config — placeholder.
+#
+# Phase 1 will replace this by running:
+#   pnpm dlx supabase init
+# inside this directory once the Supabase project exists. Until then, this
+# stub keeps the supabase/ folder tracked so CI's migration-dir check passes.
+#
+# When the project is created (saadzafar.20@gmail.com), record:
+#   - project ref (SUPABASE_PROJECT_ID)
+#   - region (recommend ca-central-1 to keep PIPEDA / PII data in Canada)
+
+project_id = "peel-car-sales-2"

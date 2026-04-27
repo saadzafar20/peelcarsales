@@ -1,0 +1,83 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  NODE_VERSION: "20"
+  SKIP_ENV_VALIDATION: "1"
+
+jobs:
+  static:
+    name: typecheck + biome + unit tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "pnpm"
+
+      - run: pnpm install --frozen-lockfile
+
+      - run: pnpm run typecheck
+      - run: pnpm run check
+      - run: pnpm run test
+
+  e2e:
+    name: playwright
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "pnpm"
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Install Playwright browsers
+        run: pnpm run e2e:install
+
+      - run: pnpm run e2e
+
+      - if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report
+          retention-days: 7
+
+  supabase-migrations:
+    name: supabase migrations
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Verify supabase migration directory exists
+        run: |
+          if [ ! -d supabase/migrations ]; then
+            echo "::error::supabase/migrations directory missing"
+            exit 1
+          fi
+          echo "supabase/migrations OK"
+
+      # TODO(phase-1): once SUPABASE_PROJECT_ID + SUPABASE_DB_URL are set in
+      # repo secrets, run a real `supabase db lint` and `supabase db diff`
+      # against a shadow database here.

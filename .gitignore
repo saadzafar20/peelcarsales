@@ -8,6 +8,10 @@
 
 # testing
 /coverage
+/playwright-report
+/test-results
+/blob-report
+/playwright/.cache
 
 # next.js
 /.next/
@@ -26,6 +30,7 @@ yarn-debug.log*
 yarn-error.log*
 
 # local env files
+.env
 .env*.local
 
 # vercel
@@ -34,3 +39,11 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# generated supabase types (regenerated via `pnpm supabase:types`)
+# tracked intentionally; uncomment if you prefer to regenerate per-environment
+# /src/lib/db.types.ts
+
+# editor
+.idea
+.cursor
