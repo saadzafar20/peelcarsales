@@ -10,12 +10,18 @@ const securityHeaders = [
   },
 ];
 
+/**
+ * Wrap with @next/bundle-analyzer when ANALYZE=true so `pnpm analyze` produces
+ * a report under .next/analyze/ without affecting normal builds.
+ */
+const withBundleAnalyzer = (await import("@next/bundle-analyzer")).default({
+  enabled: process.env.ANALYZE === "true",
+});
+
 const nextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
-  experimental: {
-    typedRoutes: true,
-  },
+  typedRoutes: true,
   images: {
     remotePatterns: [
       {
@@ -30,4 +36,4 @@ const nextConfig = {
   },
 };
 
-export default nextConfig;
+export default withBundleAnalyzer(nextConfig);

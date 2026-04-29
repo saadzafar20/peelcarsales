@@ -1,0 +1,42 @@
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "08:00"
+      timezone: "America/Toronto"
+    open-pull-requests-limit: 10
+    groups:
+      minor-and-patch:
+        applies-to: version-updates
+        update-types: ["minor", "patch"]
+      types-and-tooling:
+        applies-to: version-updates
+        patterns:
+          - "@types/*"
+          - "@biomejs/*"
+          - "@playwright/*"
+          - "@testing-library/*"
+          - "@vitejs/*"
+          - "vitest"
+          - "husky"
+          - "lint-staged"
+    commit-message:
+      prefix: "chore(deps)"
+      include: "scope"
+    labels:
+      - "dependencies"
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+    commit-message:
+      prefix: "chore(ci)"
+      include: "scope"
+    labels:
+      - "dependencies"
+      - "ci"

@@ -41,7 +41,7 @@ matter; do not ask low-stakes questions.
 
 | Concern         | Choice                                                              |
 | --------------- | ------------------------------------------------------------------- |
-| Framework       | Next.js 14 App Router, TypeScript strict mode                       |
+| Framework       | Next.js 15 App Router (React 19), TypeScript strict mode            |
 | UI              | Tailwind + shadcn/ui + Framer Motion + lucide-react                 |
 | Database        | Supabase Postgres + RLS + pgsodium for PII envelope encryption      |
 | Auth            | Supabase Auth (magic link + Google for staff)                       |
@@ -65,6 +65,11 @@ matter; do not ask low-stakes questions.
 If any of these need to change, raise it with the PO before acting — do
 not silently swap a library.
 
+> **Note on Next.js version:** the original spec called for Next 14. We
+> bumped to **Next 15** (React 19) during the Phase 0.1 hardening pass,
+> with PO sign-off, because Next 14 had 5 unpatched CVEs (2 HIGH) and
+> there is no patched 14.x release. See `CHANGELOG.md` Phase 0.1 entry.
+
 ---
 
 ## 3. Repo layout
@@ -80,7 +85,16 @@ peel-car-sales-2/
 │   ├── app/                  App Router — public + /admin/*
 │   │   ├── globals.css       Tailwind + design-token CSS variables
 │   │   ├── layout.tsx        Root layout (fonts, metadata, viewport)
-│   │   └── page.tsx          Phase 0 placeholder (replace in Phase 1)
+│   │   ├── page.tsx          Phase 0 placeholder (replace in Phase 1)
+│   │   ├── not-found.tsx     Styled 404 (brand navy + crimson)
+│   │   ├── error.tsx         Per-route error boundary (client component)
+│   │   ├── global-error.tsx  Root error boundary (renders own <html>)
+│   │   ├── robots.ts         robots.txt — blocks non-prod environments
+│   │   ├── sitemap.ts        Sitemap (Phase 0: home only; Phase 1+ adds VDPs)
+│   │   ├── icon.tsx          32×32 favicon (ImageResponse, brand glyph)
+│   │   ├── apple-icon.tsx    180×180 Apple touch icon
+│   │   └── opengraph-image.tsx 1200×630 social share card
+│   ├── middleware.ts         Per-request CSP nonce + security headers
 │   ├── components/
 │   │   └── ui/               shadcn/ui components (generated)
 │   └── lib/
@@ -127,6 +141,8 @@ integrations (e.g. `src/lib/algolia/`, `src/lib/fal/`, `src/lib/twilio/`).
 | `pnpm e2e`             | Playwright e2e (auto-builds + serves)                        |
 | `pnpm e2e:install`     | Install Chromium with deps (run once after `pnpm install`)   |
 | `pnpm verify`          | Full local CI gate: typecheck + check + test + build         |
+| `pnpm analyze`         | Build with `@next/bundle-analyzer` HTML reports under .next/  |
+| `pnpm commitlint`      | Validate the commit message at `.git/COMMIT_EDITMSG`         |
 | `pnpm supabase:types`  | Regenerate `src/lib/db.types.ts` (needs `SUPABASE_PROJECT_ID`) |
 
 CI runs `typecheck + check + test + e2e + supabase-migrations` on every
@@ -223,10 +239,14 @@ hard rules:
 8. **Financial fields are masked while typing and never logged.**
 9. **Document storage uses signed URLs only.** No public buckets for
    anything containing PII.
-10. **CSP headers, HSTS, SameSite=Strict cookies.** No third-party scripts
-    not in the explicit allowlist (which currently includes only:
-    AutoRaptor chatbot, AutoVerify SDK, Carfax TrueTrade, GTM, Lucky
-    Orange).
+10. **CSP headers, HSTS, SameSite=Strict cookies.** CSP is enforced via
+    `src/middleware.ts` with a per-request nonce. The vendor allowlist
+    lives there — adding a new third-party script means updating
+    `SCRIPT_ALLOWLIST` / `CONNECT_ALLOWLIST` / `FRAME_ALLOWLIST` in that
+    file, then passing `nonce={nonce}` from `headers().get("x-nonce")`
+    on the inline script tag. Current allowlist: AutoVerify SDK, Carfax
+    TrueTrade, AutoRaptor chatbot, Stripe, Klaviyo, GTM/GA, Lucky
+    Orange, Supabase, Algolia, Anthropic, fal.ai, PostHog.
 11. **Backups:** daily encrypted Supabase backups + nightly `pg_dump` to
     S3 with 14-day retention.
 12. **No PII in URLs, no PII in logs, no PII in Sentry.**

@@ -57,4 +57,7 @@ corresponding env var; `src/lib/env.ts` defines the typed contract._
 
 ## Resolved
 
-_(empty)_
+- **2026-04-27 — Next.js stack version.** Spec §2 locked Next 14, but 14.2.35
+  shipped with 5 unpatched CVEs (2 HIGH). PO approved bump to Next 15.5.15 +
+  React 19 during the Phase 0.1 hardening pass. CLAUDE.md §2 updated with a
+  note on the deviation.

@@ -1,0 +1,10 @@
+# Default owner — requires review on every PR until the team grows.
+* @saadzafar20
+
+# Security-critical paths flagged for extra scrutiny when team expands.
+/src/middleware.ts                 @saadzafar20
+/src/lib/env.ts                    @saadzafar20
+/supabase/migrations/              @saadzafar20
+/.github/workflows/                @saadzafar20
+/CLAUDE.md                         @saadzafar20
+/SECURITY.md                       @saadzafar20

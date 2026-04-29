@@ -9,8 +9,9 @@ used-car dealership serving Mississauga, Oakville, and the GTA. Live target doma
 
 ## Stack
 
-Next.js 14 App Router · TypeScript strict · Tailwind + shadcn/ui · Supabase Postgres + RLS +
-pgsodium · Algolia · Resend · Twilio · Stripe · Anthropic API · Vercel · Biome · Vitest + Playwright.
+Next.js 15 App Router (React 19) · TypeScript strict · Tailwind + shadcn/ui · Supabase Postgres
++ RLS + pgsodium · Algolia · Resend · Twilio · Stripe · Anthropic API · Vercel · Biome · Vitest +
+Playwright.
 
 ## Prerequisites
 
