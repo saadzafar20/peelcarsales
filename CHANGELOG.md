@@ -5,6 +5,72 @@ and [Semantic Versioning](https://semver.org). Until cutover the version stays a
 
 ## [Unreleased]
 
+### Phase 1 (UI shell with sample data) — full clickable site
+
+A real dealership site backed by hardcoded sample data tagged
+`IS_SAMPLE: true`, so Phase 1's Supabase work plugs into the existing UI
+without rework. Six progressive commits.
+
+#### Added — chrome + UI primitives
+
+- **shadcn-pattern UI primitives** with brand-token-driven CVA variants:
+  Button (8 variants × 5 sizes), Card family, Badge, Input, Separator
+- **SiteHeader** with utility bar (hours + WhatsApp + phone), main nav,
+  mobile horizontal-scroll nav, Browse + Call CTAs
+- **SiteFooter** with brand + OMVIC/UCDA/AutoTrader seals, both lot
+  addresses with Maps deep-links, hours, quick links, financing intent
+  links, legal strip
+- **WhatsAppFab** floating chat button (will deconflict with AutoRaptor
+  chatbot in Phase 3)
+- **VehiclePhoto** + **VehicleGallery** components (Picsum-seeded
+  deterministic photos until Phase 2 fal.ai pipeline)
+- **VehicleCard** for grids (badges, discount callout, mileage, body,
+  drivetrain, location, price + bi-weekly estimate)
+- **PageHero** shared component (eyebrow + title + subtitle, dark|light)
+
+#### Added — sample inventory + helpers
+
+- 12 sample vehicles spanning Honda, Toyota, Hyundai, Mazda, Lexus, Kia,
+  BMW, Ford, VW, Nissan; both lots; price range $19,499–$35,995
+- `src/lib/sample-inventory.ts` with `getFeaturedSampleVehicles`,
+  `getSampleVehicleBySlug`, `getSimilarSampleVehicles`
+- `src/lib/inventory.ts` formatting helpers + `estimateBiweeklyPaymentCents`
+  (84mo @ 7.99% APR default, 13% HST applied)
+- `src/lib/cities.ts` with 10 GTA cities for programmatic SEO
+
+#### Added — public pages
+
+| Route | What |
+| ----- | ---- |
+| `/` | Hero + featured grid + Why Peel + TrueTrade band + intent lanes + reviews + crimson CTA |
+| `/inventory` | Filter rail (working `?body=`, visual placeholders for the rest) + sort + result grid + empty state |
+| `/inventory/[slug]` | VDP with gallery, price card, bi-weekly + monthly estimate, specs table, features list, similar vehicles, sticky desktop sidebar |
+| `/financing` | Hero + 4-step process + 5-step wizard skeleton + 5 intent lanes + 4-point trust strip |
+| `/financing/calculator` | Interactive client-side calculator with sliders for price/down/term/APR; live bi-weekly + monthly + total interest output |
+| `/sell-trade` | Carfax TrueTrade entry placeholder + 4-step process + sample valuation card |
+| `/services` | 6 buyer-protection cards + 12-category inspection breakdown + warranty extension callout |
+| `/about` | Family-run narrative + values + awards/licensing table |
+| `/staff` | Inder, Mehran, Gurpreet (Gurri), Sami Haq team grid with bios + languages |
+| `/contact` | Both lots in cards with hours, contact form (Phase 3), WhatsApp CTA |
+| `/directions` | Embedded Google Maps for both lots, landmarks, Get Directions deep-links |
+| `/referral` | $250-for-you/$250-for-them program, fine print, signup form (Phase 8) |
+| `/bad-credit-car-loans` | Subprime intent landing page |
+| `/no-credit-car-loans` | First-time-buyer intent landing |
+| `/work-permit-car-loans` | Open WP / LMIA / PGWP intent landing |
+| `/student-car-loans` | Domestic + international student intent landing |
+| `/newcomer-car-loans` | PR-within-5-years intent landing |
+| `/[city]/used-cars` × 10 | Programmatic SEO pages: Mississauga, Oakville, Brampton, Toronto, Etobicoke, Hamilton, Burlington, Milton, Vaughan, Markham — each with city-specific copy, nearest-lot inventory ordering, internal-link cluster |
+
+All routes (except `/financing/calculator` which is necessarily client) are
+server components. VDPs and city pages are statically prerendered via
+`generateStaticParams`.
+
+#### Updated
+
+- Sitemap now lists all 11 static + 5 intent + 10 city + 12 VDP routes
+- E2E tests updated: home renders + security headers + 404 + a11y
+  (Picsum images excluded from axe due to MIME-tight checks)
+
 ### Phase 0.1 — security + hygiene patch
 
 #### Changed (stack lock — PO-approved deviation from spec §2)
