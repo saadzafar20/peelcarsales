@@ -29,6 +29,10 @@ const nextConfig = {
         hostname: "s3.ca-central-1.amazonaws.com",
         pathname: "/autobunny-docs/**",
       },
+      // Sample-data inventory photos. Picsum is seed-deterministic so each
+      // VIN gets a stable image. Remove this entry when sample data is.
+      { protocol: "https", hostname: "picsum.photos" },
+      { protocol: "https", hostname: "fastly.picsum.photos" },
     ],
   },
   async headers() {

@@ -1,5 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, Manrope } from "next/font/google";
+import { SiteFooter } from "@/components/site/site-footer";
+import { SiteHeader } from "@/components/site/site-header";
+import { WhatsAppFab } from "@/components/site/whatsapp-fab";
 import "./globals.css";
 
 const inter = Inter({
@@ -47,7 +50,14 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.variable} ${manrope.variable} font-sans`}>{children}</body>
+      <body
+        className={`${inter.variable} ${manrope.variable} flex min-h-screen flex-col font-sans`}
+      >
+        <SiteHeader />
+        <div className="flex-1">{children}</div>
+        <SiteFooter />
+        <WhatsAppFab />
+      </body>
     </html>
   );
 }
