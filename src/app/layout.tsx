@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, Manrope } from "next/font/google";
+import { AutoRaptorChatbot } from "@/components/embeds/auto-raptor-chatbot";
 import { SiteFooter } from "@/components/site/site-footer";
 import { SiteHeader } from "@/components/site/site-header";
 import { WhatsAppFab } from "@/components/site/whatsapp-fab";
@@ -57,6 +58,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <div className="flex-1">{children}</div>
         <SiteFooter />
         <WhatsAppFab />
+        <AutoRaptorChatbot />
       </body>
     </html>
   );

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { AutoVerifyWidget } from "@/components/embeds/autoverify-widget";
 import { Button } from "@/components/ui/button";
 
 export function Hero() {
@@ -57,9 +58,8 @@ function Stat({ label, value }: { label: string; value: string }) {
 }
 
 /**
- * Hero-side pre-qualification card. Phase 3 will replace this body with the
- * real AutoVerify widget (sdk.autoverify.com) — until then, it's a styled
- * outline that previews the funnel without a soft credit pull.
+ * Hero-side pre-qualification card. Hosts the live AutoVerify SDK widget.
+ * Falls back to a styled outline when the widget ID isn't yet set in env.
  */
 function PreQualCard() {
   return (
@@ -81,6 +81,7 @@ function PreQualCard() {
           Tell us your income, employment, and where you live. Our 20+ Canadian lenders return your
           pre-qualified affordability range and rate in under a minute.
         </p>
+        <AutoVerifyWidget placement="home" className="mt-5 min-h-[180px] w-full" />
         <ul className="mt-5 space-y-2 text-sm text-secondary-foreground/85">
           <li className="flex items-center gap-2">
             <Check /> Good credit, bad credit, no credit
@@ -93,7 +94,7 @@ function PreQualCard() {
           </li>
         </ul>
         <Button asChild size="lg" className="mt-6 w-full">
-          <Link href="/financing">Start pre-qualification</Link>
+          <Link href="/financing/apply">Start full application</Link>
         </Button>
         <p className="mt-3 text-center text-[11px] text-secondary-foreground/55">
           OMVIC + UCDA licensed · PIPEDA-compliant intake

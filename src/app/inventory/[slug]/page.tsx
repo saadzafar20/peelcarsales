@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { AutoVerifyWidget } from "@/components/embeds/autoverify-widget";
+import { CarfaxTrueTrade } from "@/components/embeds/carfax-truetrade";
 import { VehicleCard } from "@/components/site/vehicle-card";
 import { VehicleGallery } from "@/components/site/vehicle-gallery";
 import { Badge } from "@/components/ui/badge";
@@ -159,18 +161,17 @@ export default async function VehicleDetailPage({ params }: { params: Params }) 
               </ul>
             </Section>
 
-            {/* TrueTrade entry */}
+            {/* TrueTrade banner — apply trade against this exact car */}
             <Card className="border-primary/30 bg-primary/5">
-              <CardContent className="flex flex-wrap items-center justify-between gap-4 p-6">
+              <CardContent className="space-y-4 p-6">
                 <div>
                   <h3 className="font-display text-lg font-semibold">Trade your current car?</h3>
                   <p className="mt-1 text-sm text-muted-foreground">
-                    Get an instant Carfax-backed valuation and apply it as your down payment.
+                    Get an instant Carfax-backed valuation and apply it as your down payment on this{" "}
+                    {vehicle.year} {vehicle.make} {vehicle.model}.
                   </p>
                 </div>
-                <Button asChild>
-                  <Link href="/sell-trade">Get my Carfax valuation</Link>
-                </Button>
+                <CarfaxTrueTrade variant="banner" className="min-h-[200px]" />
               </CardContent>
             </Card>
           </div>
@@ -261,8 +262,9 @@ export default async function VehicleDetailPage({ params }: { params: Params }) 
                     Bad credit, work permit, student permit, newcomer — we&apos;ve got 20+ lenders
                     ready to work with you.
                   </p>
+                  <AutoVerifyWidget placement="vdp" className="min-h-[200px]" />
                   <Button asChild size="lg" className="w-full">
-                    <Link href="/financing">Start pre-qualification</Link>
+                    <Link href="/financing/apply">Start full application</Link>
                   </Button>
                 </CardContent>
               </Card>

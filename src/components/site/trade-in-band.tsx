@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { CarfaxTrueTrade } from "@/components/embeds/carfax-truetrade";
 import { Button } from "@/components/ui/button";
 
 /**
@@ -45,26 +46,15 @@ export function TradeInBand() {
         <div className="relative isolate">
           <div className="absolute -inset-3 -z-10 rounded-3xl bg-gradient-to-br from-accent/30 via-primary/10 to-transparent blur-2xl" />
           <div className="rounded-2xl border border-border bg-card p-7 shadow-lg">
-            <div className="flex items-center justify-between">
+            <div className="mb-4 flex items-center justify-between">
               <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                Sample Carfax estimate
+                Carfax TrueTrade
               </span>
               <span className="rounded-full bg-accent/15 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-accent-foreground">
                 Powered by Carfax
               </span>
             </div>
-            <div className="mt-4 text-sm text-muted-foreground">2019 Honda CR-V EX-L AWD</div>
-            <div className="mt-1 font-display text-4xl font-bold tracking-tight">
-              $24,800 – $26,300
-            </div>
-            <div className="mt-1 text-xs text-muted-foreground">
-              Based on 78,500 km, GTA market, condition: Good
-            </div>
-            <div className="mt-5 grid grid-cols-3 gap-3 border-t border-border pt-4 text-xs">
-              <Cell label="Wholesale" value="$22,400" />
-              <Cell label="Trade target" value="$25,500" />
-              <Cell label="Retail" value="$28,900" />
-            </div>
+            <CarfaxTrueTrade variant="banner" className="min-h-[260px]" />
           </div>
         </div>
       </div>
@@ -74,12 +64,4 @@ export function TradeInBand() {
 
 function Dot() {
   return <span className="mt-1 size-2 shrink-0 rounded-full bg-primary" aria-hidden />;
-}
-function Cell({ label, value }: { label: string; value: string }) {
-  return (
-    <div>
-      <div className="text-[10px] uppercase tracking-wider text-muted-foreground">{label}</div>
-      <div className="mt-1 font-display font-bold">{value}</div>
-    </div>
-  );
 }

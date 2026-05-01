@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { CarfaxTrueTrade } from "@/components/embeds/carfax-truetrade";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
 
 export const metadata: Metadata = {
   title: "Sell or trade your car — instant Carfax-backed valuation",
@@ -71,33 +71,14 @@ export default function SellTradePage() {
                     Get my valuation
                   </p>
                   <span className="rounded-full bg-accent/15 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-accent-foreground">
-                    Phase 3 widget
+                    Powered by Carfax
                   </span>
                 </div>
 
-                <div className="space-y-3">
-                  <label htmlFor="vin" className="text-xs font-semibold uppercase tracking-wider">
-                    VIN or plate
-                  </label>
-                  <Input id="vin" placeholder="17-char VIN or your plate number" disabled />
-                  <p className="text-xs text-muted-foreground">
-                    The Carfax TrueTrade widget mounts here in Phase 3.
-                  </p>
-                </div>
-
-                <div className="rounded-lg border border-dashed border-border p-4 text-center">
-                  <p className="text-xs uppercase tracking-wider text-muted-foreground">or</p>
-                  <p className="mt-2 text-sm">
-                    <span className="font-semibold">Upload a plate photo</span>
-                    <br />
-                    <span className="text-xs text-muted-foreground">
-                      We decode the VIN automatically (Phase 8)
-                    </span>
-                  </p>
-                </div>
+                <CarfaxTrueTrade variant="iframe" className="min-h-[600px]" />
 
                 <Button asChild size="lg" className="w-full">
-                  <a href="tel:9056780048">Call 905-678-0048 instead</a>
+                  <a href="tel:9056780048">Or call 905-678-0048</a>
                 </Button>
               </CardContent>
             </Card>

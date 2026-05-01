@@ -72,6 +72,8 @@ export const env = createEnv({
     NEXT_PUBLIC_AUTOVERIFY_ORIGIN: z.string().url().default("https://sdk.autoverify.com"),
     NEXT_PUBLIC_AUTOVERIFY_HOME_WIDGET_ID: z.string().optional(),
     NEXT_PUBLIC_AUTOVERIFY_VDP_WIDGET_ID: z.string().optional(),
+    NEXT_PUBLIC_CARFAX_TRUETRADE_ACCOUNT: z.string().optional(),
+    NEXT_PUBLIC_AUTORAPTOR_ACCOUNT_ID: z.string().optional(),
   },
   runtimeEnv: {
     NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_SITE_URL,
@@ -113,6 +115,8 @@ export const env = createEnv({
     NEXT_PUBLIC_AUTOVERIFY_ORIGIN: process.env.NEXT_PUBLIC_AUTOVERIFY_ORIGIN,
     NEXT_PUBLIC_AUTOVERIFY_HOME_WIDGET_ID: process.env.NEXT_PUBLIC_AUTOVERIFY_HOME_WIDGET_ID,
     NEXT_PUBLIC_AUTOVERIFY_VDP_WIDGET_ID: process.env.NEXT_PUBLIC_AUTOVERIFY_VDP_WIDGET_ID,
+    NEXT_PUBLIC_CARFAX_TRUETRADE_ACCOUNT: process.env.NEXT_PUBLIC_CARFAX_TRUETRADE_ACCOUNT,
+    NEXT_PUBLIC_AUTORAPTOR_ACCOUNT_ID: process.env.NEXT_PUBLIC_AUTORAPTOR_ACCOUNT_ID,
   },
   skipValidation: !!process.env.SKIP_ENV_VALIDATION,
   emptyStringAsUndefined: true,
