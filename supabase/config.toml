@@ -1,12 +1,37 @@
-# Supabase local config — placeholder.
+# Supabase local config.
 #
-# Phase 1 will replace this by running:
-#   pnpm dlx supabase init
-# inside this directory once the Supabase project exists. Until then, this
-# stub keeps the supabase/ folder tracked so CI's migration-dir check passes.
-#
-# When the project is created (saadzafar.20@gmail.com), record:
-#   - project ref (SUPABASE_PROJECT_ID)
-#   - region (recommend ca-central-1 to keep PIPEDA / PII data in Canada)
+# When the user runs `pnpm dlx supabase init` then `supabase link --project-ref
+# $SUPABASE_PROJECT_ID` the CLI will overwrite this file with the canonical
+# format. This stub keeps the directory tracked + lints reasonably until then.
 
 project_id = "peel-car-sales-2"
+
+[api]
+enabled = true
+port = 54321
+schemas = ["public", "storage", "graphql_public"]
+
+[db]
+port = 54322
+shadow_port = 54320
+major_version = 15
+
+[studio]
+enabled = true
+port = 54323
+
+[auth]
+enabled = true
+site_url = "http://localhost:3100"
+additional_redirect_urls = ["https://peelcarsales.ca"]
+jwt_expiry = 3600
+enable_signup = true
+
+[auth.email]
+enable_signup = true
+double_confirm_changes = true
+enable_confirmations = false
+
+[storage]
+enabled = true
+file_size_limit = "50MiB"
