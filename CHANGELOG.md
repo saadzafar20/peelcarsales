@@ -5,6 +5,61 @@ and [Semantic Versioning](https://semver.org). Until cutover the version stays a
 
 ## [Unreleased]
 
+### Phase 2 — Live integrations: embeds, Supabase, Stripe, admin, financing wizard
+
+5 progressive commits delivering the full integration spec end-to-end.
+Everything compiles green; runtime gates on env vars (Supabase / Stripe /
+Plaid) are explicit so the site stays usable as accounts are provisioned.
+
+#### Embeds (commit A)
+
+- AutoVerify pre-qualification SDK on home + VDP + financing sidebar
+- Carfax TrueTrade trade-in (banner + iframe variants)
+- AutoRaptor chatbot site-wide
+- /api/widget-events POST endpoint mirrors widget events
+- All gracefully no-op when account IDs aren't set
+
+#### Supabase (commit B)
+
+- 5 SQL migrations: schema (17 tables), RLS deny-by-default, pgsodium
+  PII encryption (peel_pii_v1 key), pii_access_log + audit RPC,
+  high-level RPCs (create_lead, submit_finance_application)
+- src/lib/supabase/{client,server,admin,feature,staff}.ts wrappers
+- src/lib/db.types.ts hand-rolled (regenerates from live schema)
+
+#### Stripe (commit C)
+
+- $500 manual-capture PaymentIntent flow with 72h hold
+- /api/stripe/create-hold + /api/stripe/capture + /api/webhooks/stripe
+- HoldCarButton client component with Stripe Elements modal
+- Webhook handlers toggle vehicle.status active <-> on_hold
+
+#### Admin (commit D)
+
+- Magic-link auth (/login + /auth/callback via Supabase OTP)
+- Role-gated /admin layout, role-aware sidebar
+- Pages: dashboard with KPIs, inventory list + new (3-step VIN UI),
+  unified leads inbox, finance-applications with PIPEDA callout,
+  pii_access_log audit viewer, staff roster
+
+#### Financing wizard (commit E)
+
+- 5-step secure intake at /financing/apply
+- Per-step Zod validation, draft localStorage *excluding SIN*
+- SinInput masks + defeats autofill; PlaidLinkButton lazy-loads
+  link-initialize.js
+- /api/financing/submit enforces consent_version match (defense in
+  depth), encrypts SIN/DOB/income via pgsodium, writes immutable
+  consent rows
+- Versioned PIPEDA consent text (TODO: legal review pre-launch)
+
+#### Stack additions
+
+- `stripe@22`, `@stripe/stripe-js`, `@stripe/react-stripe-js`
+- commitlint scope enum extended with `embeds`, `admin`, `stripe`, `supabase`
+
+---
+
 ### Phase 1 (UI shell with sample data) — full clickable site
 
 A real dealership site backed by hardcoded sample data tagged
