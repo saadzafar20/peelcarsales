@@ -14,6 +14,7 @@ import { z } from "zod";
 export const env = createEnv({
   server: {
     // --- Phase 1 (Supabase) -------------------------------------------------
+    CORS_ALLOWED_ORIGINS: z.string().optional(),
     SUPABASE_SERVICE_ROLE_KEY: z.string().min(1).optional(),
     SUPABASE_PROJECT_ID: z.string().optional(),
 
@@ -78,6 +79,7 @@ export const env = createEnv({
   runtimeEnv: {
     NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_SITE_URL,
     NEXT_PUBLIC_SITE_ENV: process.env.NEXT_PUBLIC_SITE_ENV,
+    CORS_ALLOWED_ORIGINS: process.env.CORS_ALLOWED_ORIGINS,
     NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
     NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
     SUPABASE_SERVICE_ROLE_KEY: process.env.SUPABASE_SERVICE_ROLE_KEY,

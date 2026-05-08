@@ -54,7 +54,51 @@ const FRAME_ALLOWLIST = [
   "https://chatbot.autoraptor.com",
 ];
 
+function getCorsHeaders(request: NextRequest) {
+  const origin = request.headers.get("origin");
+  if (!origin) {
+    return null;
+  }
+
+  const allowedOrigins = (process.env.CORS_ALLOWED_ORIGINS ?? "")
+    .split(",")
+    .map((value) => value.trim())
+    .filter(Boolean);
+
+  if (!allowedOrigins.includes(origin)) {
+    return null;
+  }
+
+  return {
+    "Access-Control-Allow-Origin": origin,
+    "Access-Control-Allow-Methods": "GET,POST,PUT,PATCH,DELETE,OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type, Authorization",
+    "Access-Control-Allow-Credentials": "true",
+    Vary: "Origin",
+  };
+}
+
 export function middleware(request: NextRequest) {
+  if (request.nextUrl.pathname.startsWith("/api/")) {
+    const corsHeaders = getCorsHeaders(request);
+
+    if (request.method === "OPTIONS") {
+      return new NextResponse(null, {
+        status: corsHeaders ? 204 : 403,
+        headers: corsHeaders ?? undefined,
+      });
+    }
+
+    const response = NextResponse.next();
+    if (corsHeaders) {
+      for (const [key, value] of Object.entries(corsHeaders)) {
+        response.headers.set(key, value);
+      }
+    }
+
+    return response;
+  }
+
   const nonce = btoa(crypto.randomUUID());
 
   const csp = [
@@ -88,6 +132,7 @@ export function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
+    "/api/:path*",
     {
       source: "/((?!api|_next/static|_next/image|favicon.ico|robots.txt|sitemap.xml).*)",
       missing: [
